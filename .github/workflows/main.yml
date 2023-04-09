@@ -26,8 +26,11 @@ jobs:
       with:
         ruby-version: ${{ matrix.ruby-version }}
         bundler-cache: true
-    - name: Run tests
-      run: bundle exec rspec
+    - name: postgres
+      uses: ankane/setup-postgres@v1
+      with:
+        database: neighbor_test
+    - run: bundle exec rspec
     - name: setup pgvector
       run: |
           sudo apt-get update && sudo apt-get install postgresql-server-dev-14
@@ -35,11 +38,9 @@ jobs:
           cd pgvector
           make
           sudo make install
-      - name: run specs for pgvector
-        run: EXT=vector bundle exec rspec
+    - run: EXT=vector bundle exec rspec
   rubocop:
     runs-on: ubuntu-latest
-
     steps:
     - uses: actions/checkout@v3
     - name: Set up Ruby
@@ -48,5 +49,5 @@ jobs:
         ruby-version: '3.0'
         bundler-cache: true
     - name: Run RuboCop
-      run: bundle exec rake rubocop
+      run: bundle exec rubocop
 

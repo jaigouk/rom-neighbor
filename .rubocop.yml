@@ -1,13 +1,29 @@
+require:
+  - rubocop-performance
+  - rubocop-sequel
+
 AllCops:
-  TargetRubyVersion: 2.6
+  NewCops: enable
+  Exclude:
+    - db/**/*.rb
+    - bin/**/*.rb
+    - bin/*
+    - vendor/**/*
+    - spec/**/*
 
-Style/StringLiterals:
-  Enabled: true
-  EnforcedStyle: double_quotes
+Metrics/BlockLength:
+  Exclude:
+    - spec/support/shared_contexts/*.rb
+    - spec/support/shared_examples/*.rb
+    - spec/**/*_spec.rb
+    - spec/factories/*.rb
 
-Style/StringLiteralsInInterpolation:
-  Enabled: true
-  EnforcedStyle: double_quotes
+Style/Documentation:
+  Enabled: false
 
-Layout/LineLength:
-  Max: 120
+Style/HashSyntax:
+  Enabled: false
+
+Style/RescueModifier:
+  Exclude:
+    - spec/**/*_spec.rb

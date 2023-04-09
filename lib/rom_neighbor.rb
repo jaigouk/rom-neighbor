@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require_relative "rom/neighbor/version"
+require_relative 'rom/neighbor/version'
 
 module Rom
   module Neighbor

@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require "rom-neighbor"
+require_relative "../lib/rom_neighbor"
 
 RSpec.configure do |config|
   # Enable flags like --only-failures and --next-failure

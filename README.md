@@ -7,8 +7,6 @@ THIS GEM IS UNDER DEVELOPMENT. DO NOT USE IT IN PRODUCTION.
 
 this gem is a port of [neighbor gem](https://github.com/ankane/neighbor) for rom-rb.
 
-Neighbor supports two extensions: [cube](https://www.postgresql.org/docs/current/cube.html) and [vector](https://github.com/pgvector/pgvector). cube ships with Postgres, while vector supports approximate nearest neighbor search.
-
 ## Installation
 
 Add this line to your application’s Gemfile:
