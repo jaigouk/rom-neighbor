@@ -1,26 +1,49 @@
 # Rom::Neighbor
 
+[![Gem Version](https://badge.fury.io/rb/rom-neighbor.svg)](https://badge.fury.io/rb/rom-neighbor)
+[![Ruby](https://github.com/jaigouk/rom-neighbor/actions/workflows/main.yml/badge.svg)](https://github.com/jaigouk/rom-neighbor/actions/workflows/main.yml)
+
 THIS GEM IS UNDER DEVELOPMENT. DO NOT USE IT IN PRODUCTION.
 
-this gem is a port of [neighbor](http:
+this gem is a port of [neighbor gem](https://github.com/ankane/neighbor) for rom-rb.
 
 Neighbor supports two extensions: [cube](https://www.postgresql.org/docs/current/cube.html) and [vector](https://github.com/pgvector/pgvector). cube ships with Postgres, while vector supports approximate nearest neighbor search.
 
 ## Installation
 
-TODO: Replace `UPDATE_WITH_YOUR_GEM_NAME_PRIOR_TO_RELEASE_TO_RUBYGEMS_ORG` with your gem name right after releasing it to RubyGems.org. Please do not do it earlier due to security reasons. Alternatively, replace this section with instructions to install your gem from git if you don't plan to release to RubyGems.org.
+Add this line to your application’s Gemfile:
 
-Install the gem and add to the application's Gemfile by executing:
+```ruby
+gem "rom-neighbor"
+```
 
-    $ bundle add UPDATE_WITH_YOUR_GEM_NAME_PRIOR_TO_RELEASE_TO_RUBYGEMS_ORG
+## Choose An Extension
 
-If bundler is not being used to manage dependencies, install the gem by executing:
+Neighbor supports two extensions: [cube](https://www.postgresql.org/docs/current/cube.html) and [vector](https://github.com/pgvector/pgvector). cube ships with Postgres, while vector supports approximate nearest neighbor search.
 
-    $ gem install UPDATE_WITH_YOUR_GEM_NAME_PRIOR_TO_RELEASE_TO_RUBYGEMS_ORG
+```sh
+bundle exec rake 'db:create_migration[create_cube_extension]'
+# add the following to the migration
+CREATE EXTENSION cube;
+```
+
+For vector, [install pgvector](https://github.com/pgvector/pgvector#installation) and run:
+
+```sh
+cd /tmp
+git clone --branch v0.4.1 https://github.com/pgvector/pgvector.git
+cd pgvector
+make
+make install # may need sudo
+
+bundle exec rake 'db:create_migration[create_vector_extension]'
+# add the following to the migration
+CREATE EXTENSION vector;
+```
 
 ## Usage
 
-TODO: Write usage instructions here
+TBD
 
 ## Development
 
@@ -30,7 +53,7 @@ To install this gem onto your local machine, run `bundle exec rake install`. To 
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/rom-neighbor.
+Bug reports and pull requests are welcome on GitHub at https://github.com/jaigouk/rom-neighbor.
 
 ## License
 

@@ -27,7 +27,16 @@ jobs:
         ruby-version: ${{ matrix.ruby-version }}
         bundler-cache: true
     - name: Run tests
-      run: bundle exec rake spec
+      run: bundle exec rspec
+    - name: setup pgvector
+      run: |
+          sudo apt-get update && sudo apt-get install postgresql-server-dev-14
+          git clone --branch v0.4.1 https://github.com/pgvector/pgvector.git
+          cd pgvector
+          make
+          sudo make install
+      - name: run specs for pgvector
+        run: EXT=vector bundle exec rspec
   rubocop:
     runs-on: ubuntu-latest
 
@@ -41,26 +50,3 @@ jobs:
     - name: Run RuboCop
       run: bundle exec rake rubocop
 
-  publish-rubygem:
-    runs-on: ubuntu-latest
-    name: Publish Ruby Gem
-    needs: [specs, rubocop]
-
-    steps:
-    - name: publish gem
-      uses: actions/checkout@v3
-    - name: Set up Ruby
-      uses: ruby/setup-ruby@v1
-      with:
-        ruby-version: '3.0'
-        bundler-cache: true
-    - run: |
-        mkdir -p $HOME/.gem
-        touch $HOME/.gem/credentials
-        chmod 0600 $HOME/.gem/credentials
-        printf -- "---\n:rubygems_api_key: ${GEM_HOST_API_KEY}\n" > $HOME/.gem/credentials
-        gem build *.gemspec
-        gem push *.gem
-      env:
-        GEM_HOST_API_KEY: "${{secrets.RUBYGEMS_API_KEY}}"
-      if: ${{ steps.release.outputs.releas
