@@ -4,6 +4,8 @@ require 'pg'
 require 'pgvector'
 
 RSpec.configure do |config|
+  config.add_setting :pg_vector_connection
+
   config.before(:suite) do
     database_url = ENV['DATABASE_URL'] || 'postgres://user:password@localhost:5432/rom_neighbor_test'
     conn = PG.connect(database_url)
@@ -19,5 +21,7 @@ RSpec.configure do |config|
     Pgvector::PG.register_vector(registry)
     conn.type_map_for_queries = PG::BasicTypeMapForQueries.new(conn, registry: registry)
     conn.type_map_for_results = PG::BasicTypeMapForResults.new(conn, registry: registry)
+
+    RSpec.configuration.pg_vector_connection = conn
   end
 end
