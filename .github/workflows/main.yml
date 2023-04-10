@@ -19,39 +19,40 @@ jobs:
           - '3.2'
           - '3.1'
           - '3.0'
+
+    env:
+      DATABASE_URL: postgres://postgres:postgres@localhost:5432/neighbor_test
+
     steps:
-    - uses: actions/checkout@v3
-    - name: Set up Ruby ${{ matrix.ruby-version }}
-      uses: ruby/setup-ruby@v1
-      with:
-        ruby-version: ${{ matrix.ruby-version }}
-        bundler-cache: true
-    - name: postgres
-      uses: ankane/setup-postgres@v1
-      with:
-        database: neighbor_test
-    - run: bundle exec rspec
-      env:
-        DATABASE_URL: postgres://postgres:postgres@localhost:5432/neighbor_test
-    - name: setup pgvector
-      run: |
-          sudo apt-get update && sudo apt-get install postgresql-server-dev-14
+      - uses: actions/checkout@v3
+      - name: Set up Ruby ${{ matrix.ruby-version }}
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: ${{ matrix.ruby-version }}
+          bundler-cache: true
+      - uses: ankane/setup-postgres@v1
+        with:
+          database: neighbor_test
+          dev-files: true
+      - run: |
+          cd /tmp
           git clone --branch v0.4.1 https://github.com/pgvector/pgvector.git
           cd pgvector
           make
           sudo make install
-    - run: EXT=vector bundle exec rspec
-      env:
-        DATABASE_URL: postgres://postgres:postgres@localhost:5432/neighbor_test
-
+      - run: |
+          bundle exec rspec
+        env:
+          DATABASE_URL: postgres://runner:@localhost:5432/neighbor_test
   rubocop:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v3
-    - name: Set up Ruby
-      uses: ruby/setup-ruby@v1
-      with:
-        ruby-version: '3.0'
-        bundler-cache: true
-    - name: Run RuboCop
-      run: bundle exec rubocop
+      - uses: actions/checkout@v3
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.0'
+          bundler-cache: true
+      - run: bundle install --jobs 4 --retry 3
+      - name: Run RuboCop
+        run: bundle exec rubocop
