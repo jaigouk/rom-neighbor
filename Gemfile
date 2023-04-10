@@ -7,15 +7,18 @@ gemspec
 
 gem 'rake', '~> 13.0'
 
-gem 'rspec', '~> 3.0'
+group :test do
+  gem 'database_cleaner-sequel'
 
-gem 'rubocop', '~> 1.21'
+  gem 'rspec', '~> 3.0'
+  gem 'rubocop', '~> 1.21'
 
-gem 'brakeman'
-gem 'bundler-audit'
-gem 'byebug'
-gem 'dotenv'
+  gem 'brakeman'
+  gem 'bundler-audit'
+  gem 'byebug'
+  gem 'dotenv'
 
-gem 'rubocop-performance'
-gem 'rubocop-sequel'
-gem 'rubocop-shopify'
+  gem 'rubocop-performance'
+  gem 'rubocop-sequel'
+  gem 'rubocop-shopify'
+end

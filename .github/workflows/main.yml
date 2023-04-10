@@ -31,6 +31,8 @@ jobs:
       with:
         database: neighbor_test
     - run: bundle exec rspec
+      env:
+        DATABASE_URL: postgres://postgres:postgres@localhost:5432/neighbor_test
     - name: setup pgvector
       run: |
           sudo apt-get update && sudo apt-get install postgresql-server-dev-14
@@ -39,6 +41,9 @@ jobs:
           make
           sudo make install
     - run: EXT=vector bundle exec rspec
+      env:
+        DATABASE_URL: postgres://postgres:postgres@localhost:5432/neighbor_test
+
   rubocop:
     runs-on: ubuntu-latest
     steps:
@@ -50,4 +55,3 @@ jobs:
         bundler-cache: true
     - name: Run RuboCop
       run: bundle exec rubocop
-
