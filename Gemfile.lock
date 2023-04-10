@@ -3,6 +3,7 @@ PATH
   specs:
     rom-neighbor (0.0.1)
       pg (~> 1.4)
+      pgvector (~> 0.1.1)
       rom (~> 5.3)
       rom-sql (~> 3.6)
 
@@ -51,6 +52,7 @@ GEM
     parser (3.2.2.0)
       ast (~> 2.4.1)
     pg (1.4.6)
+    pgvector (0.1.1)
     rainbow (3.1.1)
     rake (13.0.6)
     regexp_parser (2.7.0)
