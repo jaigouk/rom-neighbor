@@ -16,11 +16,11 @@ unless rom.gateways[:default].connection.table_exists?(:test_table)
   end
 end
 
-DatabaseCleaner[:sequel, db: rom.gateways[:default].connection]
 DatabaseCleaner.allow_remote_database_url = true
 
 RSpec.configure do |config|
   config.before(:suite) do
+    DatabaseCleaner[:sequel].db = rom.gateways[:default].connection
     DatabaseCleaner.strategy = :transaction
     DatabaseCleaner.clean_with(:truncation)
   end
