@@ -31,9 +31,6 @@ jobs:
           ruby-version: ${{ matrix.ruby-version }}
           bundler-cache: true
       - uses: ankane/setup-postgres@v1
-        env:
-          POSTGRES_USER: postgres
-          POSTGRES_PASSWORD: postgres
         with:
           database: neighbor_test
           dev-files: true
@@ -43,14 +40,10 @@ jobs:
           cd pgvector
           make
           sudo make install
-          echo $USER
       - run: |
-          echo "============"
-          echo $USER
-          echo "============"
           bundle exec rspec
         env:
-          DATABASE_URL: postgres://postgres:@localhost:5432/neighbor_test
+          DATABASE_URL: postgres://runner:@localhost:5432/neighbor_test
   rubocop:
     runs-on: ubuntu-latest
     steps:
