@@ -51,7 +51,6 @@ jobs:
           until pg_isready --host=localhost --dbname=postgres --username=postgres; do
             sleep 1
           done
-      - run: bundle exec rspec
       - name: setup pgvector
         run: |
           sudo apt-get update && sudo apt-get install -y postgresql-server-dev-14
@@ -59,7 +58,7 @@ jobs:
           cd pgvector
           make
           sudo make install
-      - run: EXT=vector bundle exec rspec
+      - run: bundle exec rspec
 
   rubocop:
     runs-on: ubuntu-latest
