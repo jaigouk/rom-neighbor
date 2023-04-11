@@ -43,8 +43,14 @@ jobs:
           cd pgvector
           make
           sudo make install
-      - run: bundle exec rspec
-
+          echo $USER
+      - run: |
+          echo "============"
+          echo $USER
+          echo "============"
+          bundle exec rspec
+        env:
+          DATABASE_URL: postgres://postgres:@localhost:5432/neighbor_test
   rubocop:
     runs-on: ubuntu-latest
     steps:
