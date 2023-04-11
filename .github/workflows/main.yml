@@ -12,21 +12,6 @@ jobs:
   specs:
     runs-on: ubuntu-latest
 
-    services:
-      postgres:
-        image: postgres:14
-        env:
-          POSTGRES_USER: postgres
-          POSTGRES_PASSWORD: postgres
-          POSTGRES_DB: neighbor_test
-        options: >-
-          --health-cmd pg_isready
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
-        ports:
-          - 5432:5432
-
     strategy:
       fail-fast: false
       matrix:
@@ -45,16 +30,15 @@ jobs:
         with:
           ruby-version: ${{ matrix.ruby-version }}
           bundler-cache: true
-      - run: bundle install --jobs 4 --retry 3
-      - name: Wait for PostgreSQL service
-        run: |
-          until pg_isready --host=localhost --dbname=postgres --username=postgres; do
-            sleep 1
-          done
-      - name: setup pgvector
-        run: |
+      - uses: ankane/setup-postgres@v1
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+        with:
+          database: neighbor_test
+          dev-files: true
+      - run: |
           cd /tmp
-          sudo apt-get update && sudo apt-get install -y postgresql-server-dev-14
           git clone --branch v0.4.1 https://github.com/pgvector/pgvector.git
           cd pgvector
           make
